@@ -9,7 +9,7 @@ import { ProcessesComponent } from './components/processes/processes.component';
 import { NotionComponent } from './components/apis/notion/notion.component';
 import { AirtableComponent } from './components/apis/airtable/airtable.component';
 import { TrelloComponent } from './components/apis/trello/trello.component';
-import { GoogleSheetsComponent } from './components/apis/google-sheets/google-sheets.component';
+import { PostgresComponent } from './components/apis/postgres/postgres.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { GoogleSheetsComponent } from './components/apis/google-sheets/google-sh
     NotionComponent,
     AirtableComponent,
     TrelloComponent,
-    GoogleSheetsComponent
+    PostgresComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GoogleSheetsComponent } from './google-sheets.component';
+import { PostgresComponent } from './postgres.component';
 
-describe('GoogleSheetsComponent', () => {
-  let component: GoogleSheetsComponent;
-  let fixture: ComponentFixture<GoogleSheetsComponent>;
+describe('PostgresComponent', () => {
+  let component: PostgresComponent;
+  let fixture: ComponentFixture<PostgresComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GoogleSheetsComponent ]
+      declarations: [ PostgresComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GoogleSheetsComponent);
+    fixture = TestBed.createComponent(PostgresComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

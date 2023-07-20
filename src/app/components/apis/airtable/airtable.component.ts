@@ -13,26 +13,32 @@ export class AirtableComponent implements OnInit {
       "unit": "64835bd65cafe862fc0d323a",
       "source": "API",
       "api": {
-        "request": {
-          "method": "GET",
-          "url": "https://api.airtable.com/v0/apprK7nZPyUs8NYPp/tblnUkpnYHhfresQn",
-          "responsePath": "data.records",
-          "auth": {
-            "type": "OAuth 2.0",
-            "oauth2": {
-              "client_id": "901cdb99-7ab8-4b98-9b53-71ed73d05606",
-              "scope": "data.records:read",
-              "auth_uri": "https://airtable.com/oauth2/v1/authorize",
-              "token_uri": "https://www.airtable.com/oauth2/v1/token",
-              "use_code_verifier": true
-            }
-          }
+        "method": "GET",
+        "url": "https://api.airtable.com/v0/apprK7nZPyUs8NYPp/tblnUkpnYHhfresQn",
+        "responseType": "JSON",
+        "datasetsPath": "data.records",
+        "transferType": "Cursor Pagination",
+        "paginationOptions": {
+          "placement": "Query Parameters",
+          "cursorParameterPath": "data.offset",
+          "cursorParameter": "offset",
+          "limitParameter": "maxRecords",
+          "limitValue": 384
         },
-        "transferType": "Chunk",
-        "idColumn": "id",
-        "limitPerSecond": 4,
-        "datasetsCount": 96
-      }
+        "auth": {
+          "type": "OAuth 2.0",
+          "oauth2": {
+            "client_id": "901cdb99-7ab8-4b98-9b53-71ed73d05606",
+            "scope": "data.records:read",
+            "auth_uri": "https://airtable.com/oauth2/v1/authorize",
+            "token_uri": "https://www.airtable.com/oauth2/v1/token",
+            "use_code_verifier": true
+          },
+        }
+      },
+      "idColumn": "id",
+      "limitRequestsPerSecond": 1,
+      "datasetsCount": 384
     };
 
     this.http.post('http://localhost:3000/imports/', data, { withCredentials: true, observe: "response" })

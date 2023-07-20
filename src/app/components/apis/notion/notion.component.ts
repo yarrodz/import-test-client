@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 export class NotionComponent implements OnInit {
 
   constructor(
-    private route: ActivatedRoute,
     private http: HttpClient
    ) {}
 
@@ -19,13 +18,21 @@ export class NotionComponent implements OnInit {
       "unit": "64835bd65cafe862fc0d323a",
       "source": "API",
       "api": {
-        "request": {
           "method": "POST",
           "url": "https://api.notion.com/v1/databases/483dfa9aecbb4255963d63065d43f9be/query",
           "headers": {
             "Notion-Version": "2022-06-28"
           },
-          "responsePath": "data.results",
+          "datasetsPath": "data.results",
+          "transferType": "Cursor Pagination",
+          "paginationOptions": {
+            "placement": "Body",
+            "cursorParameterPath": "data.next_cursor",
+            "cursorParameter": "start_cursor",
+            "limitParameter": "page_size",
+            "limitValue": 310
+          },
+          "responseType": "JSON",
           "auth": {
             "type": "OAuth 2.0",
             "oauth2": {
@@ -37,11 +44,9 @@ export class NotionComponent implements OnInit {
             }
           }
         },
-        "transferType": "Chunk",
         "idColumn": "id",
-        "limitPerSecond": 4,
-        "datasetsCount": 4
-      }
+        "limitRequestsPerSecond": 1,
+        "datasetsCount": 310
     };
 
     this.http.post('http://localhost:3000/imports/', data, { withCredentials: true, observe: "response" })

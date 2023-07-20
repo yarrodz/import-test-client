@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'imports', component: ImportsComponent },
   { path: 'imports/:action/:id', component: ImportsComponent },
   { path: 'processes', component: ProcessesComponent },
-  { path: 'pprocesses/:action/:id', component: ProcessesComponent },
+  { path: 'processes/:action/:id', component: ProcessesComponent },
 ];
 
 @NgModule({
