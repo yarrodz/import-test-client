@@ -65,16 +65,12 @@ export class ImportsComponent implements OnInit {
       const { action, id } = params;
       
       if (action && id) {
-        console.log('switch')
         switch(action) {
-          
           case Action.CONNECT: {
-            console.log('connect dd')
             this.connect(id)
             break;
           }
           case Action.START: {
-            console.log('start dd');
             this.start(id)
             break;
           }

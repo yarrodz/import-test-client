@@ -1,17 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-notion',
   templateUrl: './notion.component.html',
   styleUrls: ['./notion.component.scss']
 })
-export class NotionComponent implements OnInit {
-
-  constructor(
-    private http: HttpClient
-   ) {}
+export class NotionComponent {
+  constructor(private http: HttpClient) {}
 
   create() {
     const data = {
@@ -19,7 +15,7 @@ export class NotionComponent implements OnInit {
       "source": "API",
       "api": {
           "method": "POST",
-          "url": "https://api.notion.com/v1/databases/483dfa9aecbb4255963d63065d43f9be/query",
+          "url": "https://api.notion.com/v1/databases/45863548df61474797b96653e7f38faa/query",
           "headers": {
             "Notion-Version": "2022-06-28"
           },
@@ -30,14 +26,14 @@ export class NotionComponent implements OnInit {
             "cursorParameterPath": "data.next_cursor",
             "cursorParameter": "start_cursor",
             "limitParameter": "page_size",
-            "limitValue": 310
+            "limitValue": 1000
           },
           "responseType": "JSON",
           "auth": {
             "type": "OAuth 2.0",
             "oauth2": {
-              "client_id": "46b3e2f4-e62d-4887-9b8e-cbda8468d178",
-              "client_secret": "secret_ecVcteJKNbqs3Gyvbkotu59CZaHmqdKnfvnibp5xHzl",
+              "client_id": "47365d8c-515d-4ebe-a5d6-2dc38e0ce9c3",
+              "client_secret": "secret_zknVrrVC5KPYbktGjUxO1T4NTw6lIX1iL3ardCKKQcP",
               "auth_uri": "https://api.notion.com/v1/oauth/authorize",
               "token_uri": "https://api.notion.com/v1/oauth/token",
               "use_code_verifier": false
@@ -46,56 +42,61 @@ export class NotionComponent implements OnInit {
         },
         "idColumn": "id",
         "limitRequestsPerSecond": 1,
-        "datasetsCount": 310
+        "datasetsCount": 1000
     };
-
     this.http.post('http://localhost:3000/imports/', data, { withCredentials: true, observe: "response" })
       .subscribe(
         (response) => {
           if (response.status == 201) {
             window.location.href = response.body as string;
           } else {
-            console.log('Response from create');
+            console.log('Response from notion create');
             console.log(response.body);
           }
         },
-        (error) => console.log('Error while sending create: ', error.message)
+        (error) => console.log('Error while sending notion create: ', error)
       );
   }
-  // secret_T8HwSIvRTRsLOB3OmkR2MzPvJSQOOn6qVliZbYmTbQc
-  // 46b3e2f4-e62d-4887-9b8e-cbda8468d178
-  // secret_ecVcteJKNbqs3Gyvbkotu59CZaHmqdKnfvnibp5xHzl
-  // https://api.notion.com/v1/oauth/authorize?client_id=46b3e2f4-e62d-4887-9b8e-cbda8468d178&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth-callback%2F
-  // https://api.notion.com/v1/oauth/token
+
   setFields(importId: string) {
     let data = {
       "id": importId,
       "fields": [
         {
           "feature": {
-            "name": "name",
+            "name": "Index",
+            "type": "number",
+            "_id": "64835bd65cafe862fc0d323a"
+          },
+          "source": "properties.Index.number"
+        },
+        {
+          "feature": {
+            "name": "Name",
             "type": "text",
             "_id": "64835bd65cafe862fc0d323a"
           },
-          "source": "properties.Name.title.0.text.content"
+          "source": "properties.Name.rich_text[0].text.content"
+        },
+        {
+          "feature": {
+            "name": "Description",
+            "type": "text",
+            "_id": "64835bd65cafe862fc0d323a"
+          },
+          "source": "properties.Description.rich_text[0].text.content"
         },
       ]
     };
     
-    // c624d99c9e6809c6195c946431e64ec5
-    // c624d99c9e6809c6195c946431e64ec5
-    // c45f90c6ac63580bc2a85f8bff642b279ec6c505e0f2d324a968f073d2735845
     this.http.post('http://localhost:3000/imports/setFields', data, { withCredentials: true }).subscribe(
       response => {
-        console.log('setFields')
+        console.log('Response from notion setFields')
         console.log(response);
       },
       error => {
-        console.log('Error while sending setFields: ', error.message);
+        console.log('Error while sending notion setFields: ', error);
       }
     );
-  }
-
-  ngOnInit(): void {
   }
 }

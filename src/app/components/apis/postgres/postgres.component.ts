@@ -26,12 +26,13 @@ export class PostgresComponent implements OnInit {
           "password": "YDLqCtSmFNp_MEdcMW6Kd12Fv7BUDbhZ",
           "database": "xbjpfeyi"
         },
-        "target": "Table",
-        "table": "operations",
+        "target": "Select",
+        "select": "SELECT * FROM operations ORDER BY {{id}} LIMIT {{limit}} OFFSET {{offset}}",
         "limit": 100
       },
       "limitRequestsPerSecond": 1,
-      "idColumn": "id"
+      "idColumn": "id",
+      "datasetsCount": 2750
     };
 
     this.http.post('http://localhost:3000/imports/', data, { withCredentials: true, observe: "response" })

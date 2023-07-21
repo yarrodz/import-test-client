@@ -1,15 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-trello',
   templateUrl: './trello.component.html',
   styleUrls: ['./trello.component.scss']
 })
-export class TrelloComponent implements OnInit {
-  constructor(
-    private http: HttpClient
-   ) {}
+export class TrelloComponent {
+  constructor(private http: HttpClient) {}
 
   create() {
     const data = {
@@ -17,32 +15,26 @@ export class TrelloComponent implements OnInit {
       "source": "API",
       "api": {
           "method": "GET",
-          "url": "https://api.trello.com/1/boards/iiq7jiPl/cards",
+          "url": "https://api.trello.com/1/boards/l0jljshi/cards",
           "responseType": "JSON",
           "datasetsPath": "data",
           "auth": {
             "type": "API key",
             "apiKey": {
               "key": "key",
-              "value": "c624d99c9e6809c6195c946431e64ec5",
+              "value": "ebc3526076b99ca3717178e4b9313ae4",
               "placement": "Query Parameters"
             }
           },
-          "transferType": "Cursor Pagination",
-          "paginationOptions": {
-            "placement": "Query Parameters",
-            "cursorParameterPath": "data[99].id",
-            "cursorParameter": "before",
-            "limitParameter": "limit",
-            "limitValue": 100
-          },
+          "transferType": "Chunk",
           "params": {
-            "token": "ATTAbb2d82a9f59a804b7ba1680dedf609ee34a489fff5090e0f702074df093434edD91A9C25"
+            "token": "ATTA0e4ed4bb5efca8b517b44f2d7316cc56ec437062637ec233bb814be8aed562008C86493C",
+            "limit": 500
           },
       },
       "idColumn": "id",
       "limitRequestsPerSecond": 1,
-       "datasetsCount": 1164
+      "datasetsCount": 500
     };
 
     this.http.post('http://localhost:3000/imports/', data, { withCredentials: true, observe: "response" })
@@ -51,11 +43,11 @@ export class TrelloComponent implements OnInit {
           if (response.status == 201) {
             window.location.href = response.body as string;
           } else {
-            console.log('Response from create');
+            console.log('Response from trello create');
             console.log(response.body);
           }
         },
-        (error) => console.log('Error while sending create: ', error.message)
+        (error) => console.log('Error while sending trello create: ', error.message)
       );
   }
   setFields(importId: string) {
@@ -75,17 +67,12 @@ export class TrelloComponent implements OnInit {
     
     this.http.post('http://localhost:3000/imports/setFields', data, { withCredentials: true }).subscribe(
       response => {
-        console.log('setFields')
+        console.log('Response from trello setFields')
         console.log(response);
       },
       error => {
-        console.log('Error while sending setFields: ', error.message);
+        console.log('Error while sending trello setFields: ', error.message);
       }
     );
   }
-
-
-  ngOnInit(): void {
-  }
-
 }
