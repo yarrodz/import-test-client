@@ -1,0 +1,14 @@
+<div style="display: flex; flex-direction: column;">
+    <div>
+        <button (click)="pause(pauseTransferId.value)">Pause</button>
+        <input #pauseTransferId placeholder="transferId">
+    </div>
+    <div>
+        <button (click)="reload(reloadTransferId.value)">Reload</button>
+        <input #reloadTransferId placeholder="transferId">
+    </div>
+    <div>
+        <button (click)="retry(retryTransferId.value)">Retry</button>
+        <input #retryTransferId placeholder="transferId">
+    </div>
+</div>

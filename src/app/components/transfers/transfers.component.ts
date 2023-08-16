@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Action } from 'src/app/enums/action.enum';
 
 @Component({
-  selector: 'app-processes',
-  templateUrl: './processes.component.html',
-  styleUrls: ['./processes.component.scss']
+  selector: 'app-transfers',
+  templateUrl: './transfers.component.html',
+  styleUrls: ['./transfers.component.scss']
 })
-export class ProcessesComponent implements OnInit {
+export class TransfersComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient
@@ -19,13 +19,13 @@ export class ProcessesComponent implements OnInit {
       id: processId
     };
     
-    this.http.post('http://localhost:3000/import-processes/pause/', data, { withCredentials: true }).subscribe(
+    this.http.post('http://localhost:3000/transfers/pause/', data, { withCredentials: true }).subscribe(
       response => {
-        console.log('pause')
+        console.log('Response from transer pause')
         console.log(response);
       },
       error => {
-        console.log('Error while sending pause: ', error.message);
+        console.log('Error while transfer pause: ', error);
       }
     );
   }
@@ -35,18 +35,18 @@ export class ProcessesComponent implements OnInit {
       "id": processId
     };
     
-    this.http.post('http://localhost:3000/import-processes/reload', data, { withCredentials: true, observe: "response" })
+    this.http.post('http://localhost:3000/transfers/reload', data, { withCredentials: true, observe: "response" })
       .subscribe(
         (response) => {
           if (response.status == 201) {
             window.location.href = response.body as string;
           } else {
-            console.log('Response from reload');
+            console.log('Response from transer reload');
             console.log(response.body);
           }
         },
         error => {
-          console.log('Error while sending reload: ', error.message);
+          console.log('Error while transfer reload: ', error);
         }
       );
   }
@@ -56,38 +56,44 @@ export class ProcessesComponent implements OnInit {
       "id": processId
     };
     
-    this.http.post('http://localhost:3000/import-processes/retry', data, { withCredentials: true, observe: "response" })
+    this.http.post('http://localhost:3000/transfers/retry', data, { withCredentials: true, observe: "response" })
       .subscribe(
         (response) => {
           if (response.status == 201) {
             window.location.href = response.body as string;
           } else {
-            console.log('Response from retry');
+            console.log('Response from transfer retry');
             console.log(response.body);
           }
         },
         error => {
-          console.log('Error while sending retry: ', error.message);
+          console.log('Error while transfer retry: ', error);
         }
       );
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params=>{
-      const { action, id } = params;
-      if (action && id) {
+      const { action, id, errorMessage } = params;
+
+      if (action !== undefined && id !== undefined) {
         switch(action) {
           case Action.RELOAD: {
             this.reload(id)
             break;
           }
-          case Action.START: {
+          case Action.RETRY: {
             this.retry(id)
             break;
           }
           default: 
-            console.log('Unknown action');
+            console.log(`Unknown action: ${action}`);
+            break;
         }
+      }
+
+      if (errorMessage !== undefined) {
+        alert(errorMessage);
       }
     });
   }

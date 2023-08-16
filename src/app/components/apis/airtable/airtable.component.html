@@ -1,10 +1,14 @@
 Airtable
 <div style="display: flex; flex-direction: column;">
     <div>
-        <button (click)="create()">Create</button>
+        <button (click)="createConnection()">Create Connection</button>
     </div>
     <div>
-        <button (click)="setFields(setFieldsImportId.value)">setFields</button>
-        <input #setFieldsImportId placeholder="importId">
+        <button (click)="createImport(connectionId.value)">Create Import</button>
+        <input #connectionId placeholder="connectionId">
+    </div>
+    <div>
+        <button (click)="setFields(importId.value)">Set Fields</button>
+        <input #importId placeholder="importId">
     </div>
 </div>

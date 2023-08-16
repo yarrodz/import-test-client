@@ -6,11 +6,11 @@
         <app-postgres></app-postgres>
     </div>
     <div>
-        <button (click)="connect(connectImportId.value)">Connect</button>
-        <input #connectImportId placeholder="importId">
+        <button (click)="getColumns(getColumnsImportId.value)">Get Columns</button>
+        <input #getColumnsImportId placeholder="importId">
     </div>
     <div>
-        <button (click)="start(startImportId.value)">start</button>
-        <input #startImportId placeholder="importId">
+        <button (click)="import(importId.value)">Import</button>
+        <input #importId placeholder="importId">
     </div>
 </div>

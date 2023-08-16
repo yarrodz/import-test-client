@@ -9,50 +9,81 @@ import { Component } from '@angular/core';
 export class AirtableComponent {
   constructor(private http: HttpClient) {}
 
-  create() {
+  createConnection() {
     const data = {
-      "unit": "64835bd65cafe862fc0d323a",
+      "name": "Airtale connection",
       "source": "API",
-      "api": {
-        "method": "GET",
-        "url": "https://api.airtable.com/v0/app21mGIM0s2BEm27/tbl3y4w8RsZO2mhbu",
-        "responseType": "JSON",
-        "datasetsPath": "data.records",
-        "transferType": "Cursor Pagination",
-        "paginationOptions": {
-          "placement": "Query Parameters",
-          "cursorParameterPath": "data.offset",
-          "cursorParameter": "offset",
-          "limitParameter": "maxRecords",
-          "limitValue": 1000
+      "type": "OAuth 2.0",
+        "oauth2": {
+          "client_id": "3b4f65dc-fb59-49e0-b8d6-28a45364b617",
+          "scope": "data.records:read",
+          "auth_uri": "https://airtable.com/oauth2/v1/authorize",
+          "token_uri": "https://www.airtable.com/oauth2/v1/token",
+          "use_code_verifier": true
         },
-        "auth": {
-          "type": "OAuth 2.0",
-          "oauth2": {
-            "client_id": "3b4f65dc-fb59-49e0-b8d6-28a45364b617",
-            "scope": "data.records:read",
-            "auth_uri": "https://airtable.com/oauth2/v1/authorize",
-            "token_uri": "https://www.airtable.com/oauth2/v1/token",
-            "use_code_verifier": true
-          },
-        }
-      },
-      "idColumn": "fields.Organization_Id",
-      "limitRequestsPerSecond": 1,
-      "datasetsCount": 1000
+        "__": {
+          "inUnit": {
+              "id": 1880374,
+              "_d": "out"
+          }
+      }
     };
-
-    this.http.post('http://localhost:3000/imports/', data, { withCredentials: true, observe: "response" })
+    this.http.post('http://localhost:3000/connections/', data, { withCredentials: true })
       .subscribe(
         (response) => {
-          if (response.status == 201) {
-            window.location.href = response.body as string;
-          } else {
-            console.log('Response from airtable create');
-            console.log(response.body);
-          }
+            console.log('Response from create airtable connection');
+            console.log(response);
         },
-        (error) => console.log('Error while sending airtable create: ', error.message)
+        (error) => console.log('Error while create airtable connection: ', error)
+      );
+  };
+
+
+  createImport(connectionId: string) {
+    const data = {
+      "name": "Airtable import",
+      "type": "Import",
+      "source": "API",
+      "idKey": "fields.Organization_Id",
+      "limitRequestsPerSecond": 1,
+      "retryOptions": {
+          "maxAttempts": 3,
+          "attemptTimeDelay": 1000
+      },
+      "request": {
+        "method": "GET",
+        "url": "https://api.airtable.com/v0/app21mGIM0s2BEm27/tbl3y4w8RsZO2mhbu"
+      },
+      "transferMethod": "Cursor Pagination",
+      "paginationOptions": {
+        "placement": "Query Parameters",
+        "cursorKey": "offset",
+        "cursorPath": "data.offset",
+        "limitKey": "maxRecords",
+        "limitValue": 1000
+      },
+      "datasetsPath": "data.records",
+      "idPath": "fields.Organization_Id",
+      "__": {
+        "inUnit": {
+            "id": 1880374,
+            "_d": "out"
+        },
+        "hasConnection": {
+            "id": Number(connectionId),
+            "_d": "out"
+        }
+    },
+   }
+      
+
+  this.http.post('http://localhost:3000/imports/', data, { withCredentials: true })
+      .subscribe(
+        (response) => {
+            console.log('Response from airtable import create');
+            console.log(response);
+        },
+        (error) => console.log('Error while airtable import create: ', error)
       );
   }
 
@@ -64,7 +95,7 @@ export class AirtableComponent {
           "feature": {
             "name": "Organization_Id",
             "type": "text",
-            "_id": "64835bd65cafe862fc0d323a"
+            "id": "1880162"
           },
           "source": "fields.Organization_Id"
         },
@@ -72,7 +103,7 @@ export class AirtableComponent {
           "feature": {
             "name": "Name",
             "type": "text",
-            "_id": "64835bd65cafe862fc0d323a"
+            "id": "1880162"
           },
           "source": "fields.Name"
         },
@@ -80,20 +111,20 @@ export class AirtableComponent {
           "feature": {
             "name": "Description",
             "type": "text",
-            "_id": "64835bd65cafe862fc0d323a"
+            "id": "1880162"
           },
           "source": "fields.Description"
         },
       ]
     };
     
-    this.http.post('http://localhost:3000/imports/setFields', data, { withCredentials: true }).subscribe(
+    this.http.patch('http://localhost:3000/imports/', data, { withCredentials: true }).subscribe(
       response => {
         console.log('Response from airtable setFields')
         console.log(response);
       },
       error => {
-        console.log('Error while sending airtable  setFields: ', error);
+        console.log('Error while airtable setFields: ', error);
       }
     );
   }

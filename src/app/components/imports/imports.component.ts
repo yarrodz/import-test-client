@@ -14,69 +14,69 @@ export class ImportsComponent implements OnInit {
     private http: HttpClient
    ) {}
 
-  connect(importId: string) {
+  getColumns(importId: string) {
     const data = {
       id: importId
     };
     
-    this.http.post('http://localhost:3000/imports/connect/', data, { withCredentials: true, observe: "response" }).subscribe(
+    this.http.post('http://localhost:3000/imports/columns/', data, { withCredentials: true, observe: "response" }).subscribe(
       (response) => {
         if (response.status == 201) {
           window.location.href = response.body as string;
         } else {
-          console.log('Response from connect');
+          console.log('Response from getting columns');
           console.log(response.body);
         }
       },
       error => {
-        console.log('Error while sending connect: ', error.message);
+        console.log('Error while getting columns: ', error.message);
       }
     );
   }
-  // secret_T8HwSIvRTRsLOB3OmkR2MzPvJSQOOn6qVliZbYmTbQc
-  // 46b3e2f4-e62d-4887-9b8e-cbda8468d178
-  // secret_ecVcteJKNbqs3Gyvbkotu59CZaHmqdKnfvnibp5xHzl
-  // https://api.notion.com/v1/oauth/authorize?client_id=46b3e2f4-e62d-4887-9b8e-cbda8468d178&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth-callback%2F
-  // https://api.notion.com/v1/oauth/token
 
-  start(importId: string) {
+  import(importId: string) {
     const data = {
       "id": importId
     };
     
-    this.http.post('http://localhost:3000/imports/start', data, { withCredentials: true, observe: "response" })
+    this.http.post('http://localhost:3000/imports/import', data, { withCredentials: true, observe: "response" })
       .subscribe(
         (response) => {
           if (response.status == 201) {
             window.location.href = response.body as string;
           } else {
-            console.log('Response from start');
+            console.log('Response from starting import');
             console.log(response.body);
           }
         },
         error => {
-          console.log('Error while sending start: ', error.message);
+          console.log('Error while starting import: ', error.message);
         }
       );
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params=>{
-      const { action, id } = params;
+      const { action, id, errorMessage } = params;
       
-      if (action && id) {
+      if (action !== undefined && id !== undefined) {
         switch(action) {
-          case Action.CONNECT: {
-            this.connect(id)
+          case Action.GET_COLUMNS: {
+            this.getColumns(id)
             break;
           }
-          case Action.START: {
-            this.start(id)
+          case Action.IMPORT: {
+            this.import(id)
             break;
           }
           default: 
-            console.log('Unknown action');
+            console.log(`Unknown action: ${action}`);
+            break;
         }
+      }
+
+      if (errorMessage !== undefined) {
+        alert(errorMessage);
       }
     });
   }
