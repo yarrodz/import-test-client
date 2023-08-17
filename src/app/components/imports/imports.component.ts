@@ -29,7 +29,7 @@ export class ImportsComponent implements OnInit {
         }
       },
       error => {
-        console.log('Error while getting columns: ', error.message);
+        console.log('Error while getting columns: ', error);
       }
     );
   }
@@ -50,7 +50,7 @@ export class ImportsComponent implements OnInit {
           }
         },
         error => {
-          console.log('Error while starting import: ', error.message);
+          console.log('Error while starting import: ', error);
         }
       );
   }

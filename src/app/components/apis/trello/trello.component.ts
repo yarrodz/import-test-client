@@ -83,7 +83,8 @@ export class TrelloComponent {
   setFields(importId: string) {
     let data = {
       "id": importId,
-      "fields": [
+        "source": "API",
+        "fields": [
         {
           "feature": {
             "name": "name",
@@ -101,7 +102,7 @@ export class TrelloComponent {
         console.log(response);
       },
       error => {
-        console.log('Error while trello setFields: ', error.message);
+        console.log('Error while trello setFields: ', error);
       }
     );
   }

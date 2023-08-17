@@ -35,7 +35,7 @@ export class NotionComponent {
             console.log('Response from create notion connection');
             console.log(response);
         },
-        (error) => console.log('Error while sending create notion connection: ', error.message)
+        (error) => console.log('Error while sending create notion connection: ', error)
       );
   };
 
@@ -95,6 +95,7 @@ export class NotionComponent {
   setFields(importId: string) {
     let data = {
       "id": importId,
+      "source": "API",
       "fields": [
         {
           "feature": {

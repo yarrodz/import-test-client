@@ -35,7 +35,7 @@ export class PostgresComponent implements OnInit {
             console.log('Response from create postres connection');
             console.log(response);
         },
-        (error) => console.log('Error while sending create postres connection: ', error.message)
+        (error) => console.log('Error while sending create postres connection: ', error)
       );
   };
 
@@ -72,13 +72,14 @@ export class PostgresComponent implements OnInit {
             console.log('Response from create postgres import');
             console.log(response);
         },
-        (error) => console.log('Error while create postgres import: ', error.message)
+        (error) => console.log('Error while create postgres import: ', error)
       );
   }
 
   setFields(importId: string) {
     let data = {
       "id": importId,
+      "source": "SQL",
       "fields": [
         {
           "feature": {
@@ -137,7 +138,7 @@ export class PostgresComponent implements OnInit {
         console.log(response);
       },
       error => {
-        console.log('Error while postgres set postgres import fields: ', error.message);
+        console.log('Error while postgres set postgres import fields: ', error);
       }
     );
   }

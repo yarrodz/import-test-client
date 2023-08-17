@@ -90,6 +90,7 @@ export class AirtableComponent {
   setFields(importId: string) {
     let data = {
       "id": importId,
+      "source": 'API',
       "fields": [
         {
           "feature": {
@@ -98,8 +99,8 @@ export class AirtableComponent {
             "id": "1880162"
           },
           "source": "fields.Organization_Id"
-        },
-        {
+        },  
+        { 
           "feature": {
             "name": "Name",
             "type": "text",
